@@ -20,11 +20,8 @@ def check_args(url, output_file):
         sys.exit(1)
 
     try:
-        file = open(output_file, "r")
+        file = open(output_file, "w")
         file.close()
-    except FileNotFoundError:
-        print("The file does not exist.")
-        sys.exit(1)
     except:
         print("Failed to open file.")
         sys.exit(1)
@@ -76,7 +73,8 @@ def get_obce(vyber_obce_page, url):
             name = tds[1].getText()
             obec_path = a["href"]
 
-            obec_url = url.replace("ps3?xjazyk=CZ", obec_path)
+            parts = url.split("/")
+            obec_url = url.replace(parts[-1], obec_path)
             obec_page = load_page(obec_url)
 
             info_obec = {
@@ -128,26 +126,19 @@ def execute_program():
     check_args(url, output_file)
 
     # Process
-    uzemi_page = load_page(url) 
-    vyber_obce_urls = get_vyber_obce_urls(uzemi_page, url)
-    
-    uzemi_list = []
-    for vyber_obce_url in vyber_obce_urls:
-        vyber_obce_page = load_page(vyber_obce_url)
-        obec_list = get_obce(vyber_obce_page, url)
-        uzemi_list.append(obec_list)
+    vyber_obce_page = load_page(url)
+    obec_list = get_obce(vyber_obce_page, url)
     
     # Add missing keys
-    uzemi_list[0][0].setdefault("Česká národní fronta", "")
-    uzemi_list[0][0].setdefault("Národ Sobě", "")
-    csv_columns = uzemi_list[0][0].keys()
+    obec_list[0].setdefault("Česká národní fronta", "")
+    obec_list[0].setdefault("Národ Sobě", "")
+    csv_columns = obec_list[0].keys()
 
     # Write to csv
-    csv_soubor = open("results.csv", mode="w", encoding="UTF-8")
+    csv_soubor = open(output_file, mode="w", encoding="UTF-8")
     writer = csv.DictWriter(csv_soubor, fieldnames=csv_columns, delimiter=";")
     writer.writeheader()
-    for obec_list in uzemi_list:
-        writer.writerows(obec_list)
+    writer.writerows(obec_list)
     csv_soubor.close()
 
 if __name__ == "__main__":
