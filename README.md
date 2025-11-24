@@ -1,20 +1,23 @@
 # Projekt: Elections Scraper
 
-Tento projekt je vytvořen k získávání výsledků voleb ze zadaného odkazu. Tyto výsledky ukládá do souboru CSV.
+This project is designed to retrieve election results from a given URL and save those results into a CSV file.
 
-## Instalace
+## Installation
 
-- Vytvoř si nové virtuální prostředí  
+- Create a new virtual environment:  
   `python3 -m venv moje_virtualni_prostredi`
-- Aktivuj jej  
-  `source moje_virtualni_prostredi/bin/activate` - aktivace pro Linux a MacOS  
-  `moje_virtualni_prostredi\Scripts\Activate.ps1` - aktivace pro Windows
-- Nainstaluj potřebné knihovny:  
+- Activate it:  
+  `source moje_virtualni_prostredi/bin/activate`  
+  – activation for Linux and macOS  
+  `moje_virtualni_prostredi\Scripts\Activate.ps1`  
+  – activation for Windows
+- Install the required libraries:  
   `pip3 install -r requirements.txt`
-- Spusť soubor za pomoci dvou argumentů:
+- Run the script using two arguments:
 
-1. URL adresa územního celku (odkaz, který chceš scrapovat)
-2. Název výstupního souboru (soubor musí mít příponu .csv)
+1. The URL of the administrative area (the link you want to scrape)
+2. The name of the output file (must have a .csv extension)
 
-př. spuštění projektu:
+### Example of running the project:
+
 `python3 main.py "https://www.volby.cz/pls/ps2017nss/ps32?xjazyk=CZ&xkraj=1&xnumnuts=1100" results.csv`
